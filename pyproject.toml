@@ -3,6 +3,9 @@ name = "hello-poetry"
 version = "0.1.0"
 description = "A simple package to test a Poetry package"
 authors = ["Jitse-Jan <code@jitsejan.com>"]
+readme = "README.md"
+homepage = "https://github.com/jitsejan/hello-poetry"
+repository = "https://github.com/jitsejan/hello-poetry"
 
 [tool.poetry.dependencies]
 python = "^3.9"
