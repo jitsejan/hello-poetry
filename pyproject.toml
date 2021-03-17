@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "hello-poetry"
-version = "0.1.0"
+version = "0.2.0"
 description = "A simple package to test a Poetry package"
 authors = ["Jitse-Jan <code@jitsejan.com>"]
 readme = "README.md"
