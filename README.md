@@ -133,7 +133,7 @@ jitsejan@theviji:~/python-packages$ . /home/jitsejan/.cache/pypoetry/virtualenvs
 
 
 
-![image-20210316152405760](/Users/jitse-jan.vanwaterschoot/code/hello-poetry/docs/images/pypiserver_init.png)
+![image-20210316152405760](docs/images/pypiserver_init.png)
 
 ### Security
 
@@ -148,7 +148,7 @@ Adding password for user pyjitsejan
 ~ ❯ sudo apt install nginx   
 ```
 
-![image-20210317020517205](/Users/jitse-jan.vanwaterschoot/code/hello-poetry/docs/images/pypiserver_nginx.png)
+![image-20210317020517205](docs/images/pypiserver_nginx.png)
 
 ```
 ~ ❯ sudo touch /etc/nginx/sites-available/pypi.jitsejan.com
@@ -182,7 +182,7 @@ Enable
 
 
 
-![image-20210317021320157](/Users/jitse-jan.vanwaterschoot/code/hello-poetry/docs/images/pypiserver_subdomain.png)
+![image-20210317021320157](docs/images/pypiserver_subdomain.png)
 
 ## SSL
 
@@ -192,7 +192,7 @@ Enable
 ~ ❯ sudo certbot --nginx -d pypi.jitsejan.com
 ```
 
-![image-20210317135226586](/Users/jitse-jan.vanwaterschoot/code/hello-poetry/docs/images/pypiserver_ssl.png)
+![image-20210317135226586](docs/images/pypiserver_ssl.png)
 
 
 
@@ -254,7 +254,7 @@ Publishing hello-poetry (0.1.0) to dev
  - Uploading hello_poetry-0.1.0-py3-none-any.whl 100%
 ```
 
-![](/Users/jitse-jan.vanwaterschoot/code/hello-poetry/docs/images/pypiserver_simple.png)
+![](docs/images/pypiserver_simple.png)
 
 To avoid the need to type the username and password every time I want to push my package I set them through the `poetry config`.
 
