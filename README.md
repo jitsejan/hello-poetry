@@ -1,8 +1,8 @@
 # Hello Poetry!
 
-> Publishing your Python package to your own server
+### Publishing your Python package to your own server
 
-It has been quite a few years that I have been working with Python but I never took the time to take a deeper look into how to package my code. To be fair, I never really had the use case and the following tutorial is purely a simple introduction on how to create your package and deploy it to your private server. I have used the **complex** way of packaging as described on [python.org](https://packaging.python.org/tutorials/packaging-projects/#packaging-python-projects) in a different project (maybe another article?) and found it to be pretty tedious so I looked for a different method. A popular way of creating and deploying packages is by using [poetry](https://python-poetry.org) that can take care of your virtual environments and has a built-in mechanism to publish your packages to [PyPI](https://pypi.org).
+It has been quite a few years that I have been working with Python but I never took the time to take a deeper look into how to package my code. To be fair, I never really had the use case and the following tutorial is purely a simple introduction on how to create your package and deploy it to your private server. I have used the **complex** way of packaging as described on [python.org](https://packaging.python.org/tutorials/packaging-projects/#packaging-python-projects) in a different project (maybe a future article?) and found it to be pretty tedious so I looked for a different method. A popular way of creating and deploying packages is by using [poetry](https://python-poetry.org) that can take care of your virtual environments and has a built-in mechanism to publish your packages to [PyPI](https://pypi.org).
 
 ## Prerequisites
 
@@ -12,20 +12,20 @@ It has been quite a few years that I have been working with Python but I never t
 
 ### Pyenv
 
-First of all, I make sure I have [pyenv](https://github.com/pyenv/pyenv) installed on my server to manage the Python versions. Since I am on Ubuntu I use the [pyenv-installer](https://github.com/pyenv/pyenv-installer) as suggested in the docs.
+First of all, I make sure I have [pyenv](https://github.com/pyenv/pyenv) installed on my server to manage the Python versions. Since I will host the PyPi server on my Ubuntu VPS (`theviji`) I use the [pyenv-installer](https://github.com/pyenv/pyenv-installer) as suggested in the docs.
 
 ```bash
 jitsejan@theviji:~$ curl https://pyenv.run | bash
 ```
 
-Update the `~/.zshrc` to enable `pyenv`:
+Update the `~/.zshrc` by exporting the environment variables and making `pyenv` available:
 
 ```bash
 jitsejan@theviji:~$ echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.zshrc                                                                                       jitsejan@theviji:~$ echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.zshrc
 jitsejan@theviji:~$ echo -e 'if command -v pyenv 1>/dev/null 2>&1; then\n  eval "$(pyenv init -)"\nfi' >> ~/.zshrc                                                   
 ```
 
-Reload the `~/.zshrc` and verify the version of `pyenv`.
+Reload the `~/.zshrc` and verify the version of `pyenv`. At the time of writing the latest version is 1.2.23.
 
 ```bash
 jitsejan@theviji:~$ source ~/.zshrc
@@ -33,15 +33,15 @@ jitsejan@theviji:~$ pyenv --version
 pyenv 1.2.23
 ```
 
-Because of Linux [build problems](https://github.com/pyenv/pyenv/wiki/common-build-problems) I had to install the following packages to make `pyenv` work.
+Because of Linux build problems as mentioned on the [PyEnv Wiki](https://github.com/pyenv/pyenv/wiki/common-build-problems) I had to install the following packages to make `pyenv` work on Ubuntu.
 
-```
+```bash
 jitsejan@theviji:~$ sudo apt-get install -y build-essential libssl-dev zlib1g-dev libbz2-dev \
 libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev \
 xz-utils tk-dev libffi-dev liblzma-dev python-openssl git
 ```
 
-Finally, I'll install the [latest Python version](https://www.python.org/downloads/) which is 3.9.2. at the time of writing and make it the default Python version so it will be used automatically in a virtual environment.
+Finally, I'll install the [latest Python version](https://www.python.org/downloads/) which is 3.9.2 at the time of writing and make it the default Python version using the `pyenv global` command so it will be used automatically in a virtual environment.
 
 ```bash
 jitsejan@theviji:~$ pyenv install 3.9.2
@@ -56,7 +56,7 @@ jitsejan@theviji:~$ pyenv versions
 
 ### Poetry
 
-Install Poetry for managing virtual environments and packaging the Python repositories.
+I will install Poetry for managing my virtual environments and packaging the Python repositories to be published on my private server.
 
 ```bash
 jitsejan@theviji:~$ curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -jitsejan@theviji:~$ source $HOME/.poetry/env
@@ -64,17 +64,19 @@ jitsejan@theviji:~$ poetry --version
 Poetry version 1.1.5
 ```
 
-And for shell completion the following command. I am using Linux with ZSH on my VPS so I use the right syntax according to their [docs](https://python-poetry.org/docs/#enable-tab-completion-for-bash-fish-or-zsh).
+And for shell completion I will add the following command to my zshell configuration. This makes it easier to work with poetry on the command line.
 
 ```bash
 jitsejan@theviji:~$ poetry completions zsh > $ZSH_CUSTOM/plugins/poetry/_poetry
 ```
 
+We are all set!
+
 ## Setup PyPi server
 
-### Setup the repository
+### Setting up the repository
 
-Create the folder and initialize a Poetry package inside of it. I am using Python 3.9 and fill in the rest of the metadata.
+The first step is to create a folder and initialize a Poetry package inside of it. I am using Python 3.9 and fill in the rest of the metadata.
 
 ```bash
 jitsejan@theviji:~$ mkdir ~/python-packages
@@ -123,7 +125,9 @@ Package operations: 1 install, 0 updates, 0 removals
 
 ### Running
 
-```
+In order to run the server I activate the shell and start the `pypi-server` on port 8082. This port is by default public so be careful what to publish. When running it in production make sure to take care of the security.
+
+```bash
 jitsejan@theviji:~/python-packages$ poetry shell
 Spawning shell within /home/jitsejan/.cache/pypoetry/virtualenvs/python-packages-nJx9lSAW-py3.9
 . /home/jitsejan/.cache/pypoetry/virtualenvs/python-packages-nJx9lSAW-py3.9/bin/activate
@@ -131,7 +135,7 @@ jitsejan@theviji:~/python-packages$ . /home/jitsejan/.cache/pypoetry/virtualenvs
 (python-packages-nJx9lSAW-py3.9) jitsejan@theviji:~/python-packages$ pypi-server -p 8082 .
 ```
 
-
+Navigating to my website and checking the port shows the welcome page of the server. So far so good.
 
 ![image-20210316152405760](docs/images/pypiserver_init.png)
 
@@ -244,7 +248,7 @@ jitsejan@theviji:~/code/hello-poetry $ tree .
 
 
 ```bash
-~/code/hello-poetry master ❯ poetry config repositories.dev http://pypi.jitsejan.com
+~/code/hello-poetry master ❯ poetry config repositories.dev https://pypi.jitsejan.com
 ~/code/hello-poetry master ❯ poetry publish -r dev                                                            No suitable keyring backends were found
 Using a plaintext file to store and retrieve credentials
 Username: pyjitsejan
@@ -303,8 +307,6 @@ Bumping version from 0.1.0 to 0.2.0
  - Uploading hello_poetry-0.2.0-py3-none-any.whl 100%
 ```
 
-
-
 ## Installation
 
 ### Option 1 - Install using pip
@@ -312,7 +314,7 @@ Bumping version from 0.1.0 to 0.2.0
 #### Option 1.1 - Specifying the argument via the CLI
 
 ```bash
-❯ pip install --extra-index-url http://pypi.jitsejan.com/simple --trusted-host pypi.jitsejan.com hello-poetry
+❯ pip install --extra-index-url https://pypi.jitsejan.com/simple --trusted-host pypi.jitsejan.com hello-poetry
 ```
 
 #### Option 1.2 - Set the PypPi configuration
@@ -400,7 +402,7 @@ from hello_poetry.hellopoetry import HelloPoetry
 h = HelloPoetry()
 ```
 
-Running this outputs the expected output!
+Running this outputs the expected string!
 
 ```
 ❯ python test.py
@@ -417,11 +419,11 @@ Note that I could probably do better with naming the folders given that inside m
 
 ## Sources
 
-https://pypi.org/project/pypiserver/
-https://pip.pypa.io/en/stable/user_guide/
-https://medium.com/@christianhettlage/setting-up-a-pypi-server-679f1b55b96
-https://medium.com/lambda-automotive/python-poetry-finally-easy-build-and-deploy-packages-e1e84c23401f
-https://www.nginx.com/blog/using-free-ssltls-certificates-from-lets-encrypt-with-nginx/
-https://github.com/python-poetry/poetry
-https://github.com/pyenv/pyenv
-https://github.com/pyenv/pyenv-installer
+- https://pip.pypa.io/en/stable/user_guide/
+- https://pypi.org/project/pypiserver/
+- https://github.com/pyenv/pyenv
+- https://github.com/pyenv/pyenv-installer
+- https://github.com/python-poetry/poetry
+- https://www.nginx.com/blog/using-free-ssltls-certificates-from-lets-encrypt-with-nginx/
+- https://medium.com/@christianhettlage/setting-up-a-pypi-server-679f1b55b96
+- https://medium.com/lambda-automotive/python-poetry-finally-easy-build-and-deploy-packages-e1e84c23401f
