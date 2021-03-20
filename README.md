@@ -254,10 +254,10 @@ and add the following:
 Using Poetry I will create a simple package to try publishing a package to the server. Use `poetry new` to create a default package template.
 
 ```bash
-jitsejan@theviji:~/code $ poetry new hello-poetry
+jitsejan@theviji:~/code$ poetry new hello-poetry
 Created package hello_poetry in hello-poetry
-jitsejan@theviji:~/code $ cd hello-poetry/
-jitsejan@theviji:~/code/hello-poetry $ tree .
+jitsejan@theviji:~/code$ cd hello-poetry/
+jitsejan@theviji:~/code/hello-poetry$ tree .
 .
 ├── hello_poetry
 │   └── __init__.py
@@ -273,8 +273,8 @@ jitsejan@theviji:~/code/hello-poetry $ tree .
 As the **dev** repository I will use the server that I have just created before. Once I have configured the repo I can publish to **dev**. Poetry will pack the content in a TAR ball and publish it to the PyPI server.
 
 ```bash
-jitsejan@theviji:~/code/hello-poetry $ poetry config repositories.dev https://pypi.jitsejan.com
-jitsejan@theviji:~/code/hello-poetry $ poetry publish -r dev                                                            No suitable keyring backends were found
+jitsejan@theviji:~/code/hello-poetry$ poetry config repositories.dev https://pypi.jitsejan.com
+jitsejan@theviji:~/code/hello-poetry$ poetry publish -r dev                                                            No suitable keyring backends were found
 Using a plaintext file to store and retrieve credentials
 Username: pyjitsejan
 Password:
@@ -290,7 +290,7 @@ Navigating to the *Simple Index* I can see the `hello-poetry` package is now ava
 To avoid the need to type the username and password every time I want to push my package I set them through the `poetry config`.
 
 ```bash
-jitsejan@theviji:~/code/hello-poetry $ poetry config http-basic.dev pyjitsejan Sup3rS3cr3t£
+jitsejan@theviji:~/code/hello-poetry$ poetry config http-basic.dev pyjitsejan Sup3rS3cr3t£
 ```
 
 ### Bump version
@@ -322,14 +322,14 @@ jitsejan@theviji:~/code/hello-poetry $ tree .
 Using `poetry version` I bump the package version to **0.2.0** which will update the `pyproject.toml` file. With the new version in place I rerun the build step which will print it is adding the distribution for the new version. Finally, this new package gets published to the private PyPi server.
 
 ```bash
-jitsejan@theviji:~/code/hello-poetry $ poetry version 0.2.0 
+jitsejan@theviji:~/code/hello-poetry$ poetry version 0.2.0 
 Bumping version from 0.1.0 to 0.2.0
-jitsejan@theviji:~/code/hello-poetry $ poetry build                                                                      Building hello-poetry (0.2.0)
+jitsejan@theviji:~/code/hello-poetry$ poetry build                                                                      Building hello-poetry (0.2.0)
   - Building sdist
   - Built hello-poetry-0.2.0.tar.gz
   - Building wheel
   - Built hello_poetry-0.2.0-py3-none-any.whl
-jitsejan@theviji:~/code/hello-poetry $ poetry publish -r dev                                                          Publishing hello-poetry (0.2.0) to dev
+jitsejan@theviji:~/code/hello-poetry$ poetry publish -r dev                                                          Publishing hello-poetry (0.2.0) to dev
  - Uploading hello-poetry-0.2.0.tar.gz 100%
  - Uploading hello_poetry-0.2.0-py3-none-any.whl 100%
 ```
