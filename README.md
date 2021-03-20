@@ -217,7 +217,7 @@ jitsejan@theviji:~/python-packages$ pypi-server -i 127.0.0.1 -p 8082 -P .htacces
 
 After creating a new entry in my DNS records at Cloudflare I am ready to verify my new subdomain.
 
-![image-20210319152530706]((/Users/jitse-jan.vanwaterschoot/code/hello-poetry/)docs/images/pypiserver_cloudflare.png)
+![image-20210319152530706](docs/images/pypiserver_cloudflare.png)
 
 
 
